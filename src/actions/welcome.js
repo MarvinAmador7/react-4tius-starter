@@ -1,3 +1,5 @@
+import { I18n } from 'react-redux-i18n';
+
 export const FETCH_WELCOME_MESSAGE  = 'FETCH_WELCOME_MESSAGE';
 
 export function fetchWelcomeMessage () {
@@ -5,8 +7,8 @@ export function fetchWelcomeMessage () {
     dispatch({
       type    : FETCH_WELCOME_MESSAGE,
       payload : {
-        message     : 'Welcome to the new 4tius web Application',
-        description : 'React - Redux - Webpack - Immutable - ES6',
+        message     : I18n.t('application.message'),
+        description : I18n.t('application.description'),
       },
     });
   };
