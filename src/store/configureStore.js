@@ -4,10 +4,17 @@ import {
   applyMiddleware,
   combineReducers,
 } from 'redux';
-import { routerReducer } from 'react-router-redux'
+import {
+  loadTranslations,
+  setLocale,
+  syncTranslationWithStore,
+  i18nReducer } from 'react-redux-i18n';
+
+import { routerReducer } from 'react-router-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import reducers from '../reducers';
+import translations from '../i18n';
 
 const loggerMiddleware = createLogger();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,7 +24,14 @@ export default function configureStore (preloadedState) {
     composeEnhancers(
       applyMiddleware(thunkMiddleware, loggerMiddleware),
     ),
-  )(createStore)(combineReducers({reducers, routing : routerReducer}));
+  )(createStore)(combineReducers({
+    reducers,
+    i18n    : i18nReducer,
+    routing : routerReducer}));
+
+    syncTranslationWithStore(store);
+    store.dispatch(loadTranslations(translations));
+    store.dispatch(setLocale('en'));
 
   return store;
 }
