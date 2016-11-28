@@ -117,18 +117,10 @@ module.exports = {
       // tags. If you use code splitting, however, any async bundles will still
       // use the "style" loader inside the async code so CSS from them won't be
       // in the main CSS file.
+
       {
-        test: /\.(css|scss)$/,
-        // "?-autoprefixer" disables autoprefixer in css-loader itself:
-        // https://github.com/webpack/css-loader/issues/281
-        // We already have it thanks to postcss. We only pass this flag in
-        // production because "css" loader only enables autoprefixer-powered
-        // removal of unnecessary prefixes when Uglify plugin is enabled.
-        // Webpack 1.x uses Uglify plugin as a signal to minify *all* the assets
-        // including CSS. This is confusing and will be removed in Webpack 2:
-        // https://github.com/webpack/webpack/issues/283
-        loader: ExtractTextPlugin.extract('style', 'css!sass-loader?importLoaders=1&-autoprefixer!postcss')
-        // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+        test: /(\.scss|\.css)$/,
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass')
       },
       // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.
@@ -158,7 +150,6 @@ module.exports = {
     ]
   },
 
-  // We use PostCSS for autoprefixing only.
   postcss: function() {
     return [
       autoprefixer({
@@ -170,6 +161,10 @@ module.exports = {
         ]
       }),
     ];
+  },
+   sassLoader: { // this is the way we handle custom themes
+    data: '@import "theme/_config.scss";',
+    includePaths: [paths.appSrc]
   },
   plugins: [
     // Makes the public URL available as %PUBLIC_URL% in index.html, e.g.:
