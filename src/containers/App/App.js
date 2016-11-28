@@ -7,7 +7,7 @@ import { fetchWelcomeMessage } from '../../actions/welcome';
 import { changeLang } from '../../actions/lang';
 import { Translate } from 'react-redux-i18n';
 import logo from '../../assets/logo.svg';
-import './App.css';
+import styles from './App.css';
 
 function mapStateToProps (state) {
   return state;
@@ -37,15 +37,15 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className={styles.app}>
+        <div className={styles.appHeader}>
+          <img src={logo} className={styles.appLogo} alt="logo" />
           <h2>
             <Translate value="application.message"/>
           </h2>
 
         </div>
-        <p className="App-intro">
+        <p className={styles.appIntro}>
           {this.props.reducers.welcome.toJS().description}
         </p>
         <br/>
